@@ -2,7 +2,7 @@
 function prepare(){
 
     . install_mybox.sh
-    . install_msysgit.sh
+    . install_msysgit_2.sh
 }
 
 function clean_mybox(){
@@ -16,7 +16,11 @@ function clean_mybox(){
 
 function clean_msysgit(){
     echo
-    rm -rf ../share/msysgit/bin
+    pushd ../share/msysgit/bin/
+    for file in $(cat file_list); do
+        echo rm $file
+    done
+    popd
 }
 
 function clean_all(){
@@ -33,14 +37,13 @@ function build_executable(){
 }
 
 function main(){
-    local release="$1"
     echo Build MYBOX $release
     prepare
     build_executable
 }
 
 
-
+release="1.0.0"
 clean_all
-main "1.0.0"
+main 
 

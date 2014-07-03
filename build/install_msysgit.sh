@@ -46,6 +46,7 @@ function install_to_share(){
         local f=$(basename $folder)
         if [[ $f == "bin" ]]; then
             echo install msysgit $f
+            sleep 1
             mv $folder ../share/msysgit/
         fi
     done
