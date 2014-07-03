@@ -32,9 +32,12 @@ function download_msysgit(){
 function extract_bin(){
     source ../lib/core.sh
     local msysgit=$(basename $LATEST_PORTABLE_DOWN_URL)
-    echo "extract $msysgit ..."
+    echo "mkdir tmp"
     mkdir tmp
-    7z x "$msysgit" -o"tmp" >/dev/null
+    if [[ $? -eq 0 ]]; then
+        echo "extract $msysgit ..."
+        7z x "$msysgit" -o"tmp" >/dev/null
+    fi
 }
 
 function install_to_share(){

@@ -10,6 +10,8 @@ function clean_mybox(){
     rm ../bin/mybox.sh
     rm ../bin/func_create_vm.sh
     rm ../lib/core.sh
+    rm ../bin/nc.exe
+    rm ../bin/keys/mybox
 }
 
 function clean_msysgit(){

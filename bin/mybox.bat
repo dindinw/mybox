@@ -17,3 +17,5 @@ set "MYBOX_EXIT_STATUS=%ERRORLEVEL%"
 
 rem Restore path
 set "PATH=%MYBOX_PATH_SAVED%"
+
+exit /b %MYBOX_EXIT_STATUS%
