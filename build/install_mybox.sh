@@ -2,6 +2,7 @@ MYBOX="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/mybox.
 MYBOX_FUNC="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/func_create_vm.sh"
 CORE_LIB="https://raw.githubusercontent.com/dindinw/usersettings/master/lib/core.sh"
 MYBOX_KEY="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/keys/mybox"
+MYBOX_PUB_KEY="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/keys/mybox.pub"
 NC="https://github.com/dindinw/usersettings/raw/master/vbox/nc.exe"
 
 
@@ -23,4 +24,4 @@ function install_mybox_script(){
 
 install_mybox_script "../bin" $MYBOX $MYBOX_FUNC $NC
 install_mybox_script "../lib" $CORE_LIB
-install_mybox_script "../bin/keys" $MYBOX_KEY
+install_mybox_script "../bin/keys" $MYBOX_KEY $MYBOX_PUB_KEY

@@ -20,6 +20,9 @@ function clean_msysgit(){
     for file in $(cat file_list); do
         echo rm $file
     done
+    for file in $(cat file_list_curl); do
+        rm $file
+    done
     popd
 }
 
@@ -43,7 +46,7 @@ function main(){
 }
 
 
-release="1.0.0"
+release="1.1.0"
 clean_all
 main 
 
