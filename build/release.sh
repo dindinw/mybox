@@ -21,7 +21,7 @@ function clean_msysgit(){
         echo rm $file
     done
     for file in $(cat file_list_curl); do
-        rm $file
+        echo rm $file
     done
     popd
 }
