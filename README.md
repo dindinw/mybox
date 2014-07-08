@@ -1,11 +1,11 @@
 MYBOX
 =====
 
-The MYBOX toolset is command-line tool to help developer to build, manage, custimoze and preversion VMs, It provide both of file deployment way like [Vagrent][1], and fine-grained control commands to the single VM. 
+The MYBOX toolset is command-line tool to help developer to build, manage, custimoze and preversion VMs, It provide both of file deployment way like [Vagrant][1], and fine-grained control commands to the single VM. 
 
 It's support Oralce VirtualBox for local virtualization provider now. It will support VMware vSphere and OpenStack in the future version.
 
-The MYBOX toolset is very similar to [Vagant][1]. Actually The idear of MYBOX is just learn from the Vagarnt. So why we need another tool if here is vagrant already? 
+The MYBOX toolset is very similar to [Vagrant][1]. Actually The idear of MYBOX is just learn from the Vagarnt. So why we need another tool if here is vagrant already? 
 
 One simple answer to the question is : It's just for fun. I create the tool as my owned version of Vagrant to satisfy my little desire of controling :-)
 
