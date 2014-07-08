@@ -11,15 +11,15 @@ One simple answer to the question is : It's just for fun. I create the tool as m
 
 Another more serious answer is , I would like that:
 
-  *  *It should be small in size*
+  *  **It should be small in size**
 
   MYBOX is very light-weight, the main part is just a single BASH script. The size is just 100KB+ (Although in Windows Platform, the package is 11MB+, most because some mingw binary is shipped, such as bash, sed, awk etc.)
 
-  *  *It should provide more fine-grained commmand-lines*
+  *  **It should provide more fine-grained commmand-lines**
 
   The Vagrant is very good on discribe your deployemnt of VMs in a single config file ([_Vagrantfile_][2]), and share the file to re-build a entrire same enviorment for developer. the Idea is just awesome! But I would like to add some more fine-grained control under single Node/VM in a programming-friendly way, so that user can control his or her own Nodes/VMs either by a config file or by command line directly.
 
-  *  *The VMware and OpenStack should be supported (free:-))*
+  *  **The VMware and OpenStack should be supported (free:-))**
 
   It seems that The Vagrant's [vmware provider][3] is need to pay a license. Unfortunately, I readly want the Vagrant-like mechanics can also work for vsphere. and even-more, the OpenStack. (The support of Vmware and Openstack will be consider in MYBOX V2. becuase I would like to rewrite the MYBOX V2 by using an higher level language than BASH.)
 
