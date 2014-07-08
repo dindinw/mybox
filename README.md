@@ -1,19 +1,27 @@
 MYBOX
 =====
 
-The MYBOX toolset is a developer tool to help to build, manage, custimoze and preversion VMs, It's support Oralce VirtualBox now.
+The MYBOX toolset is command-line tool to help developer to build, manage, custimoze and preversion VMs, It provide both of file deployment way like [Vagrent][1], and fine-grained control commands to the single VM. 
+
+It's support Oralce VirtualBox for local virtualization provider now. It will support VMware vSphere and OpenStack in the future version.
 
 The MYBOX toolset is very similar to [Vagant][1]. Actually The idear of MYBOX is just learn from the Vagarnt. So why we need another tool if here is vagrant already? 
 
 One simple answer to the question is : It's just for fun. I create the tool as my owned version of Vagrant to satisfy my little desire of controling :-)
 
-Another more serious answer is :
+Another more serious answer is , I would like that:
 
-  * MYBOX is light-weight, the main part is just a single BASH script. The size is just 100KB+ (Although in Windows Platform, the package is 11M+, most because some mingw binary is shipped, such as bash, sed, awk etc.)
+  *  *It should be small in size*
 
-  * The Vagrant is very good on discribe your deployemnt of VMs in a single config file ([_Vagrantfile_][2]), and share the file to re-build a entrire same enviorment for developer. the Idea is just awesome! But I would like to add some more fine-grained control under single Node/VM on programming ways, so that I can control my Nodes/VMs either by a config file or by command line directly.
+  MYBOX is very light-weight, the main part is just a single BASH script. The size is just 100KB+ (Although in Windows Platform, the package is 11MB+, most because some mingw binary is shipped, such as bash, sed, awk etc.)
 
-  * It'same that The Vagrant's [vmware provider][3] is need to pay a license. Unfortunately, I readly want the Vagrant-like mechanics can also work for vsphere. and even-more, the OpenStack. (The support of Vmware and Openstack will be consider in MYBOX V2. becuase I would like to rewrite the MYBOX V2 by using an higher level language than BASH.)
+  *  *It should provide more fine-grained commmand-lines*
+
+  The Vagrant is very good on discribe your deployemnt of VMs in a single config file ([_Vagrantfile_][2]), and share the file to re-build a entrire same enviorment for developer. the Idea is just awesome! But I would like to add some more fine-grained control under single Node/VM in a programming-friendly way, so that user can control his or her own Nodes/VMs either by a config file or by command line directly.
+
+  *  *The VMware and OpenStack should be supported (free:-))*
+
+  It seems that The Vagrant's [vmware provider][3] is need to pay a license. Unfortunately, I readly want the Vagrant-like mechanics can also work for vsphere. and even-more, the OpenStack. (The support of Vmware and Openstack will be consider in MYBOX V2. becuase I would like to rewrite the MYBOX V2 by using an higher level language than BASH.)
 
 
 [1]:http://www.vagrantup.com
