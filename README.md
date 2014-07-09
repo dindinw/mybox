@@ -366,6 +366,68 @@ VM "99665317-1c9f-449b-90f1-c85aa48e0b3c" has been successfully started.
 
 ### Provision
 
+#### Do provision again entirely
+
+~~~
+C:\test-mybox>mybox provision -f
+
+Provision MYBOX environment by using ".boxconfig" ...
+[master] Try to provision MYBOX Node ...
+[master] Preparing provision ...
+test.sh                                                                               100%   18     0.0KB/s   00:00
+[master] Do the provision ...
+Welcome to Ubuntu 14.04 LTS (GNU/Linux 3.13.0-24-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+mybox-ubuntu-precise
+eth0      Link encap:Ethernet  HWaddr 08:00:27:c0:2d:c5
+          inet addr:10.0.2.15  Bcast:10.0.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fec0:2dc5/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:249 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:196 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:38830 (38.8 KB)  TX bytes:30596 (30.5 KB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+[master] Provision MYBOX Node done successfully!
+[node2] Try to provision MYBOX Node ...
+[node2] No provision task found. passed-by.
+[node3] Try to provision MYBOX Node ...
+[node3] Preparing provision ...
+mybox_inline_provision_script.sh                                                      100%   55     0.1KB/s   00:00
+[node3] Do the provision ...
+exected provision script in mybox-centos65.mybox.com
+[node3] Provision MYBOX Node done successfully!
+[node4] Try to provision MYBOX Node ...
+[node4] No provision task found. passed-by.
+~~~
+
+#### Do provision for a specified node
+
+~~~
+C:\test-mybox>mybox node provision 2 -f
+[node2] Try to provision MYBOX Node ...
+[node2] No provision task found. passed-by.
+
+C:\test-mybox>mybox node provision 3 -f
+[node3] Try to provision MYBOX Node ...
+[node3] Preparing provision ...
+mybox_inline_provision_script.sh                                                      100%   55     0.1KB/s   00:00
+[node3] Do the provision ...
+exected provision script in mybox-centos65.mybox.com
+[node3] Provision MYBOX Node done successfully!
+~~~
+
+
 ### SSH
 ~~~
 C:\test-mybox>mybox ssh
