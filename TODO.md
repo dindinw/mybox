@@ -1,9 +1,9 @@
 
 # MYBOX Todo List
 
-## MYBOX 1.1
+## MYBOX 1.1.1
   - [x] Documentation
-  - [ ] Improve log message display.
+  - [X] Improve log message display.
 
 ## MYBOX 1.2
 

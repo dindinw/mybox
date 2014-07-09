@@ -46,7 +46,7 @@ function main(){
 }
 
 
-release="1.1.0"
+release="1.1.1"
 clean_all
 main 
 

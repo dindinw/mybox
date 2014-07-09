@@ -258,7 +258,7 @@ function vbox_start_vm(){
         #default is GUI
         s_type=gui
     fi
-    echo "Try to start VBox VM \"${vm_name}\" in \"${s_type}\" mode ..."
+    log_info "Try to start VBox VM \"${vm_name}\" in \"${s_type}\" mode ..."
     VBoxManage startvm ${vm_name} --type ${s_type}
 }
 
@@ -267,20 +267,20 @@ function vbox_start_vm(){
 #                                    acpipowerbutton|acpisleepbutton|
 function vbox_stop_vm(){
     local vm_name="$1"
-    echo Stopping VBOX VM \"${vm_name}\" ...
+    log_info Stopping VBOX VM \"${vm_name}\" ...
     VBoxManage controlvm ${vm_name} poweroff
     if [[ $? -eq 0 ]]; then
-        echo VM \"${vm_name}\" has been successfully stopped.
+        log_info VM \"${vm_name}\" has been successfully stopped.
     fi
 }
 
 function vbox_delete_vm(){
     local vm_name=$1
-    echo "Delete VBOX VM \"${vm_name}\" ..."
+    log_info "Delete VBOX VM \"${vm_name}\" ..."
     vboxmanage unregistervm "$vm_name" --delete
     local ret=$?
     if [[ $ret -eq 0 ]]; then
-        echo VM \"${vm_name}\" has been successfully deleted.
+        log_info VM \"${vm_name}\" has been successfully deleted.
     fi
     return $ret
 }
@@ -315,7 +315,7 @@ function vbox_guestssh_setup(){
     local rule_name="$3"
     if [[ -z "$port" ]]; then port=2222; fi;
     if [[ -z "$rule_name" ]]; then rule_name="guestssh"; fi;
-    echo Setup ssh service to VM \"${vm_name}\" ...
+    log_info "Setup ssh service to VM \"${vm_name}\" ..."
     VBoxManage modifyvm ${vm_name} --natpf1 "${rule_name},tcp,,${port},,22"
 }
 
@@ -323,7 +323,7 @@ function vbox_guestssh_remove(){
     local vm_name="$1"
     local rule_name="$2"
     if [[ -z "$rule_name" ]]; then rule_name="guestssh"; fi;
-    echo Remove guest ssh service to VM \"${vm_name}\" ...
+    log_info "Remove guest ssh service to VM \"${vm_name}\" ..."
     VBoxManage modifyvm "${vm_name}" --natpf1 delete "$rule_name"
 }
 
