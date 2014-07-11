@@ -208,6 +208,12 @@ function listtar(){
     tar -tvf "$file"
 }
 
+function listtar_mac(){
+    local file=$(to_unix_path "$1")
+    log_debug tar -tvf "$file"
+    gtar -tvf "$file"
+}
+
 function tar_win(){
     local archive_name="$1"
     local file_names="$2"
@@ -220,6 +226,13 @@ function untar_win(){
     local output_dir="$2"
     log_debug 7z e $archive_name "*" -o$output_dir
     7z e $archive_name "*" -o$output_dir
+}
+
+function untar_mac(){
+    local archive_name="$1"
+    local output_dir="$2"
+    log_debug "gtar xzf $archive_name -C $output_dir" 
+    gtar xvf "$archive_name" -C "$output_dir" 
 }
 
 function extracttar(){

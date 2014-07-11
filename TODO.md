@@ -7,9 +7,9 @@
 
 ## MYBOX 1.2
 
-  - [ ] Mac support
-    - [ ] Add platform-depends methods for Mac.
-    - [ ] Testing under Mac
+  - [X] Mac support
+    - [X] Add platform-depends methods for Mac.
+    - [X] Testing under Mac
 
   - [ ] Linux support
     - [ ] Add platform-depends methods for Linux.

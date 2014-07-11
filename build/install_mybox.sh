@@ -3,7 +3,9 @@ MYBOX_FUNC="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/f
 CORE_LIB="https://raw.githubusercontent.com/dindinw/usersettings/master/lib/core.sh"
 MYBOX_KEY="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/keys/mybox"
 MYBOX_PUB_KEY="https://raw.githubusercontent.com/dindinw/usersettings/master/vbox/keys/mybox.pub"
-NC="https://github.com/dindinw/usersettings/raw/master/vbox/nc.exe"
+if [[ "$arch" == "win" ]]; then
+    NC="https://github.com/dindinw/usersettings/raw/master/vbox/nc.exe"
+fi
 
 
 function install_mybox_script(){

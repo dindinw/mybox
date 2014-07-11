@@ -37,7 +37,7 @@ function _err_box_not_found()
 
 function _err_node_not_found()
 {
-    err_n "$1" "MYBOX Node not found"
+    log_err "$1" "MYBOX Node not found"
 }
 
 function _err_vm_not_found(){
@@ -91,6 +91,7 @@ function _check_home()
 }
 _check_home
 
+
 function _check_vbox_install_win()
 {
     VBoxManage --version >/dev/null 2>&1
@@ -104,14 +105,16 @@ function _check_vbox_install_win()
         VBoxManage --version >/dev/null 2>&1
         if ! [ $? -eq 0 ]; then
             log_err "VirtualBox environment set error."
-            return 1
+            exit 1
         fi
     else
         log_err "VirtualBox is not installed!"
-        return 1
+        exit 1
     fi
 }
-_check_vbox_install_$arch
+function _check_vbox_install_mac(){
+    test -f /usr/bin/VBoxManage || exit
+}
 
 function _check_extractor_install_win(){
     7z >/dev/null 2>&1
@@ -124,11 +127,83 @@ function _check_extractor_install_win(){
     7z >/dev/null 2>&1
     if ! [ $? -eq 0 ]; then
         log_err "7z not installed!"
-        return 1
+        exit 1
     fi
 }
-_check_extractor_install_$arch
 
+
+
+function _check_install_win(){
+    _check_vbox_install_win
+    _check_extractor_install_win
+}
+
+function _check_install_linux(){
+    _check_ssh_keys_permission
+}
+
+function _check_install_mac(){
+    _check_vbox_install_mac
+    _check_extractor_install_mac
+    _check_gnused_install_mac
+    _check_gnufind_install_mac
+    _check_ssh_keys_permission
+}
+
+function _check_extractor_install_mac(){
+    if [[ -f /usr/local/bin/gtar ]]; then
+        export PATH=/usr/local/bin:$PATH
+    else
+        log_err "GNU tar not intalled, please install it by execute command :"
+        log_err "\t brew install gnu-tar --default-names"
+        __print_need_to_install_homebrew
+       exit 1
+    fi
+}
+
+function _check_gnused_install_mac(){
+    if [[ -f /usr/local/bin/sed ]]; then
+        export PATH=/usr/local/bin:$PATH
+    else
+        log_err "GNU sed not intalled, please install it by execute command :"
+        log_err "\t brew install gnu-sed --default-names"
+        __print_need_to_install_homebrew
+       exit 1
+    fi
+}
+function _check_gnufind_install_mac(){
+    if [[ -f /usr/local/bin/find ]]; then
+        export PATH=/usr/local/bin:$PATH
+    else
+        log_err "GNU find not intalled, please install it by execute command :"
+        log_err "\t brew install findutils --default-names"
+        __print_need_to_install_homebrew
+       exit 1
+    fi
+}
+function __print_need_to_install_homebrew(){
+    log_err "You may need to install Homebrew (http://brew.sh) first before you can use 'brew install'"
+    log_err "To install homebrew, try to execute command in terminal : "
+    log_err "\t" 'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
+    log_err "See https://github.com/Homebrew/homebrew/wiki/Installation for more details"
+ 
+}
+function _check_ssh_keys_permission(){
+    if [[ ! -f $MYBOX_HOME_DIR/keys/mybox ]]; then
+        log_err "The private key of MYBOX ($MYBOX_HOME_DIR/keys/mybox) not found."
+        exit 1
+    else
+        chmod 700 $MYBOX_HOME_DIR/keys/mybox
+    fi
+    if [[ ! -f $MYBOX_HOME_DIR/keys/mybox.pub ]]; then
+        log_err "The public key of MYBOX ($MYBOX_HOME_DIR/keys/mybox.pub) not found."
+        exit 1
+    else
+        chmod 700 $MYBOX_HOME_DIR/keys/mybox.pub
+    fi
+}
+
+_check_install_${arch}
 
 function _check_status(){
     _check_box_conf
@@ -257,6 +332,7 @@ function __get_box_metadata()
     local ovfname="${boxname}.ovf"
     
     #Vagrant box competible
+    log_debug "listtar_${arch} $boxfile |grep Vagrantfile"
     listtar_${arch} $boxfile |grep Vagrantfile > /dev/null
     if [[ $? -eq 0 ]]; then
         local vagrant=1
@@ -267,8 +343,11 @@ function __get_box_metadata()
         # awk format is like 
         # 7z  -->  2013-10-25 00:47:53 .....        14181        14336  .\box.ovf
         # tar -->  -rw------- pixline/staff     14181 2013-10-25 00:47 ./box.ovf
+        # in mac
+        # bsd-tar -->  -rw-------  0 501    20      14103 Sep 14  2012 box.ovf
+        # it's not correct, need th gnu tar!
         # in both outputh file name is $6
-        ovfname=$(listtar $boxfile |grep box.ovf |awk '{print $6}')
+        ovfname=$(listtar_${arch} $boxfile |grep box.ovf |awk '{print $6}')
     fi
 
     if [[ $vagrant -eq 1 ]]; then
@@ -303,7 +382,7 @@ function _import_box_to_vbox_vm() {
     local is_vagrant=0
 
     #Vagrant box competible
-    listtar_win $boxfile |grep Vagrantfile > /dev/null
+    listtar_${arch} $boxfile |grep Vagrantfile > /dev/null
     if [[ $? -eq 0 ]]; then
         #It's a Vagrant BOX
         log_debug "BOX : ${boxname} is a Vagrant box."
@@ -313,7 +392,7 @@ function _import_box_to_vbox_vm() {
 
     if [[ ! -e "${MYBOX_REPO}/${boxname}" ]]; then
         mkdir -p "${MYBOX_REPO}/${boxname}"
-        untar_win "${boxfile}" "${MYBOX_REPO}/${boxname}" > /dev/null
+        untar_${arch} "${boxfile}" "${MYBOX_REPO}/${boxname}" > /dev/null
     fi
     vbox_import_ovf "${MYBOX_REPO}/${boxname}/${ovfname}" "$vm_name"
 
@@ -434,7 +513,7 @@ function _remove_mybox_node_path(){
 function _get_all_node_name(){
 
     if [[ -e "${BOXFOLDER}/nodes" ]]; then
-        for node_name in $(ls ${BOXFOLDER}/nodes/ -m1)
+        for node_name in $(ls ${BOXFOLDER}/nodes/ )
         do
             echo $node_name
         done
@@ -533,7 +612,7 @@ function usage_internal()
 
 function version()
 {
-    echo "$me 1.1.0"
+    echo "$me 1.2.0"
 }
 
 function _print_not_support(){
@@ -1700,6 +1779,7 @@ function _err_bad_url(){
 }
 
 function _verify_http(){
+    log_debug "curl -s -k --head -L "$1" |grep "^HTTP/1.[01] 200""
     curl -s -k --head -L "$1" |grep "^HTTP/1.[01] 200" >/dev/null
     return $?
 }
@@ -1711,17 +1791,18 @@ function _verify_ftp(){
 function _download_box(){
     local boxname=$(basename $1)
     # verfiy url
+    local url=$(to_lowercase "$1")
     
-    case "$1" in
-        http[s]://*|HTTP[S]://*)
-            _verify_http $1
+    case "$url" in
+        http://*|https://*)
+            _verify_http $url
             if [[ ! $? -eq 0 ]]; then
                 _err_bad_url "$1"
                 return 1
             fi
             ;;
-        ftp://*|FTP://*)
-            _verify_ftp $1
+        ftp://*)
+            _verify_ftp $url
             if [[ ! $? -eq 0 ]]; then
                 _err_bad_url "$1"
                 return 1
@@ -1733,8 +1814,8 @@ function _download_box(){
             ;;
     esac
 
-    echo "Downloading $1 ..."
-    curl -k -o"./$boxname" -L "$1"
+    echo "Downloading $url ..."
+    curl -k -o"./$boxname" -L "$url"
 
     if [[ $? -eq 0 ]] && [[ -f "./$boxname" ]]; then
         _copy_box_to_local_box_repo "./$boxname"
@@ -1758,7 +1839,7 @@ function _copy_box_to_local_box_repo(){
         log_debug "$boxname is a standard box file."
         boxname=$boxbase
     fi
-    listtar_win "$1" |grep ".*ovf$" >/dev/null
+    listtar_${arch} "$1" |grep ".*ovf$" >/dev/null
     if [[ ! $? -eq 0 ]]; then
         log_err "Not a valid MYBOX or Vagrant box. \nPlease check the file \"$1\" manaually."
         return 1
@@ -2185,8 +2266,12 @@ function mybox_node_provision(){
     fi
 
     echo_n $node_name "Try to provision MYBOX Node ..."
-
-    if [[ ! -z $provision ]] && _check_node_exist $node_name; then
+    if ! _check_node_exist $node_name; then
+        echo_n $node_name $(log_err "MYBOX Node \"$node_name\" not exist, the Node maybe not created or a corrupted MYBOX environment.")
+        echo_n $node_name $(log_err "Please execute 'mybox up' command to re-build your environment.")
+        return 1
+    fi
+    if [[ ! -z $provision ]]; then
         local marker=$(__get_node_metadata "$node_name" "provision")
         log_debug "provision marker is $marker"
         if [[ $marker == "done" ]];then
@@ -2860,6 +2945,10 @@ function _check_vagrant(){
     local KEY_PRV_VAGRANT="https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant"
     if [[ ! -f $MYBOX_HOME_DIR/keys/vagrant ]]; then
         curl -s -o$MYBOX_HOME_DIR/keys/vagrant -L $KEY_PRV_VAGRANT
+    fi
+    # need to chmod for no-windown platform for vagrant key
+    if [[ ! "${arch}" == "win" ]]; then
+        chmod 700 $MYBOX_HOME_DIR/keys/vagrant
     fi
     local port=$(_get_mybox_guestssh_fowarding_port $vm_name)
     if [[ -z $port ]]; then
