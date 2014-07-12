@@ -65,7 +65,7 @@ function main(){
     echo "Build MYBOX $release done!"
 }
 
-release="1.2.0"
+release="1.2.1"
 uname=$(uname -a)
 arch=""
 case $uname in 
