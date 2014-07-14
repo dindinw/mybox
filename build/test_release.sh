@@ -2,7 +2,7 @@
 
 if [[ "$arch" == "win" ]]; then
     release_file="mybox-$release.zip"
-    release_folder="c/mybox"
+    release_folder="/c/mybox"
     extract_cmd="7z x "
 else
     release_file="mybox-$release.tar.gz"

@@ -11,9 +11,11 @@
     - [X] Add platform-depends methods for Mac.
     - [X] Testing under Mac
 
-  - [ ] Linux support
-    - [ ] Add platform-depends methods for Linux.
-    - [ ] Testing under Linux
+## MYBOX 1.2.1
+
+  - [X] Linux support
+    - [X] Add platform-depends methods for Linux.
+    - [X] Testing under Linux
 
 ## MYBOX 1.3
    

@@ -22,18 +22,21 @@ function clean_mybox(){
 function clean_msysgit(){
     echo "Clean msysgit ..."
     pushd ../share/msysgit/bin/
-    for file in $(cat file_list); do
-        echo rm $file
+    for file in $(cat ../../../build/file_list); do
+        if [[ -f $file ]]; then rm $file; fi
     done
-    for file in $(cat file_list_curl); do
-        echo rm $file
+    for file in $(cat ../../../build/file_list_curl); do
+        if [[ -f $file ]]; then rm $file; fi
+    done
+    for file in $(cat ../../../build/file_list_7zip); do
+        if [[ -f $file ]]; then rm $file; fi
     done
     popd
 }
 
 function clean_all(){
     clean_mybox
-    if [[ "$arch" == "win" ]]; then
+    if [[ "$arch" == "win" ]] && [[ "$1" == "--clean_msysgit" ]]; then
         clean_msysgit
     fi
     if [[ -f "./mybox-$release.zip" ]]; then
