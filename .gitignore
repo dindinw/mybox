@@ -1,0 +1,6 @@
+# Complied Object
+*.o
+*.a
+*.so
+*.exe
+pkg/
