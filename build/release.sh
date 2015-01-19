@@ -50,14 +50,24 @@ function clean_all(){
 
 function build_executable(){
     echo "Package MYBOX $release on $arch"
+    # fixed mod for executable
+    chmod +x ../bin/mybox.sh
+    chmod +X ../bin/mybox
+    # remove old build
+    rm -rf ./mybox-$release.tar.gz
+    # prepare parent folder
+    mkdir -p ./mybox-$release
+
     if [[ "$arch" == "win" ]]; then
-        7z a mybox-$release.zip ../bin ../share ../lib ../README.md -r
+        cp -rf ../bin ../share ../lib ../README.md ./mybox-$release
+        7z a mybox-$release.zip ./mybox-$release -r
     else
-        pushd .. >/dev/null
-        chmod +x ./bin/mybox.sh
-        tar -czf ./build/mybox-$release.tar.gz ./bin ./lib ./README.md
-        popd > /dev/null
+        cp -rf ../bin ../lib ../README.md ./mybox-$release
+        tar -czf ./mybox-$release.tar.gz ./mybox-$release
     fi
+
+    # remove parent folder
+    rm -rf ./mybox-$release
 }
 
 function main(){
@@ -68,7 +78,7 @@ function main(){
     echo "Build MYBOX $release done!"
 }
 
-release="1.2.1"
+release="1.2.2"
 uname=$(uname -a)
 arch=""
 case $uname in 
